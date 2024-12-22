@@ -6,9 +6,11 @@ function fetchNotes() {
   const xhr = new XMLHttpRequest();
   xhr.open("GET", `${baseUrl}`);
 
-  xhr.onload = function () {
-    const notes = JSON.parse(xhr.responseText);
-    displayNotes(notes);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      const notes = JSON.parse(xhr.responseText);
+      displayNotes(notes);
+    }
   };
 
   xhr.send();
@@ -61,9 +63,11 @@ function saveNote() {
   xhr.open(method, url);
   xhr.setRequestHeader("Content-Type", "application/json");
 
-  xhr.onload = function () {
-    clearForm();
-    fetchNotes();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      clearForm();
+      fetchNotes();
+    }
   };
 
   const data = JSON.stringify({
@@ -81,8 +85,10 @@ function deleteNote(id) {
   const xhr = new XMLHttpRequest();
   xhr.open("DELETE", `${baseUrl}/${id}`);
 
-  xhr.onload = function () {
-    fetchNotes();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      fetchNotes();
+    }
   };
 
   xhr.send();
